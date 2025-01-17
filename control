@@ -1,0 +1,12 @@
+Package: com.huami.xhstranslator
+Name: XHSTranslator
+Version: 0.1-1
+Description: A tweak for translating content in XiaoHongShu
+Section: Tweak
+Depends: firmware (>= 5.0), mobilesubstrate
+Priority: optional
+Architecture: iphoneos-arm
+Author: huami
+Maintainer: huami
+Homepage: https://github.com/huami1314/xhstranslator
+License: MIT
