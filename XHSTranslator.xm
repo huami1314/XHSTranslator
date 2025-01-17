@@ -23,6 +23,8 @@
 #import <objc/runtime.h>
 #import "translateMgr.h"
 
+static BOOL canConnectToGoogle = YES;
+
 %hook XYPHNoteComment
 
 - (void)setContent:(NSString *)arg1 {
@@ -31,6 +33,12 @@
         return;
     }
     
+    if (!canConnectToGoogle) {
+        // NSLog(@"can't connect to google");
+        %orig(arg1);
+        return;
+    }
+
     NSString *cleanedText;
     [translateMgr extractSpecialMarks:arg1 cleanedText:&cleanedText];
     
@@ -44,9 +52,21 @@
         return;
     }
     
-    NSString *translatedText = [translateMgr translateText:cleanedText];
-    NSString *finalText = [NSString stringWithFormat:@"原文：%@\n\n翻译：%@", arg1, translatedText];
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    __block NSString *translatedText = cleanedText;
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        translatedText = [translateMgr translateText:cleanedText];
+        dispatch_semaphore_signal(semaphore);
+    });
+    
+    if (dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC)) != 0) {
+        canConnectToGoogle = NO;
+        %orig(arg1);
+        return;
+    }
+    
+    NSString *finalText = [NSString stringWithFormat:@"原文：%@\n\n翻译：%@", arg1, translatedText];
     %orig(finalText);
 }
 

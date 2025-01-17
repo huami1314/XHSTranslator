@@ -6,7 +6,7 @@ DEBUG = 0
 
 THEOS_PACKAGE_SCHEME = rootless
 
-PACKAGE_VERSION = 1.0
+PACKAGE_VERSION = 1.1
 PACKAGE_NAME = com.huami.xhstranslator
 
 THEOS_TOOLCHAIN_PATH = /Users/huami/Library/Developer/Toolchains/Hikari_LLVM19.0.0git.xctoolchain

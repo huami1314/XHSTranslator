@@ -1,6 +1,6 @@
 Package: com.huami.xhstranslator
 Name: XHSTranslator
-Version: 0.1-1
+Version: 1.1
 Description: A tweak for translating content in XiaoHongShu
 Section: Tweak
 Depends: firmware (>= 5.0), mobilesubstrate
